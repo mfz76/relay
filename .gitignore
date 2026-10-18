@@ -1,0 +1,8 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Google service account credentials
+relay-service.json
+service-account*.json
