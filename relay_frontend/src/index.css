@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* ===== RELAY DESIGN TOKENS (SINGLE SOURCE OF TRUTH) ===== */
+:root {
+  --bg-page: #ECEAE4;
+  --bg-dark: #0E1014;
+  --surface-card: #FFFFFF;
+  --surface-card-dark: rgba(255, 255, 255, 0.04);
+  --border-dark-card: rgba(255, 255, 255, 0.08);
+  
+  --ink: #0F1115;
+  --ink-muted: #6B6F76;
+  --divider: rgba(15, 17, 21, 0.06);
+
+  --accent-amber: #F59E0B;
+  --accent-amber-glow: rgba(245, 165, 36, 0.35);
+
+  --status-high-fg: #E5484D;
+  --status-high-bg: rgba(229, 72, 77, 0.10);
+
+  --status-medium-fg: #D97706;
+  --status-medium-bg: rgba(245, 158, 11, 0.10);
+
+  --status-low-fg: #2E9E6B;
+  --status-low-bg: rgba(46, 158, 107, 0.10);
+
+  --status-neutral-fg: #6B6F76;
+  --status-neutral-bg: rgba(107, 111, 118, 0.10);
+
+  --sidebar-w-expanded: 240px;
+  --sidebar-w-collapsed: 64px;
+  --radius-card: 28px;
+  --radius-inner: 16px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 8px 30px rgba(15, 17, 21, 0.06);
+}
+
+[data-theme="dark"] {
+  --bg-page: #0B0D12;
+  --surface-card: #151821;
+  --ink: #F8FAFC;
+  --ink-muted: #94A3B8;
+  --divider: rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Soft Amber Radial Glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: -100px;
+  left: 20vw;
+  width: 60vw;
+  height: 500px;
+  background: radial-gradient(circle at 40% 30%, rgba(245, 165, 36, 0.35) 0%, rgba(232, 131, 42, 0.20) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Strict Monospace for Ticket IDs only */
+.font-ticket {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+}
+
+/* App Collapsible Sidebar Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar-container {
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--divider);
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .sidebar-container {
+  background-color: rgba(15, 18, 26, 0.85);
+}
+
+.main-container {
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+  transition: margin-left 0.25s cubic-bezier(0.16, 1, 0.3, 1), width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reusable Card System */
+.relay-card {
+  background-color: var(--surface-card);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--divider);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.relay-card-dark {
+  background-color: var(--bg-dark);
+  color: #FFFFFF;
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  margin-top: 24px;
+}
+
+.relay-card-dark-inner {
+  background-color: var(--surface-card-dark);
+  border: 1px solid var(--border-dark-card);
+  border-radius: var(--radius-inner);
+  padding: 20px;
+}
+
+/* Hero Numbers & Labels */
+.hero-number {
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.kpi-value {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.muted-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+}
+
+/* Pill Component */
+.relay-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Icon Buttons */
+.btn-icon-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background-color: var(--ink);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-icon-circle:hover {
+  transform: scale(1.05);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--divider);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  background-color: var(--divider);
+  color: var(--ink);
+}
+
+/* Input & Select */
+.relay-input {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--divider);
+  background-color: var(--surface-card);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 16px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.relay-input:focus {
+  border-color: var(--accent-amber);
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
